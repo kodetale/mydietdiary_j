@@ -367,19 +367,31 @@ p {
 }
 
 .minus_btn {
-  top: 14px;
+  background-image: url(/img/minus.png);
+  background-size: 23px 23px;
+  background-color: transparent;
+  background-repeat: no-repeat; 
+  border: none;
+  top: 16px;
   left: 390px;
   position: absolute;
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
 .e_minus_btn {
-  top: 14px;
+  background-image: url(/img/minus.png);
+  background-size: 23px 23px;
+  background-color: transparent;
+  background-repeat: no-repeat; 
+  border: none;
+  top: 16px;
   left: 415px;
   position: absolute;
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
 .form {
@@ -551,17 +563,11 @@ select::-ms-expand {
   }
 
   .minus_btn {
-    top: 16px;
-    left: 274px;
-    width: 23px;
-    height: 23px;
+    left: 258px;
   }
 
   .e_minus_btn {
-    top: 16px;
-    left: 282px;
-    width: 23px;
-    height: 23px;
+    left: 280px;
   }
 
   .edit_plus_btn {

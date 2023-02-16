@@ -23,7 +23,7 @@
       <div id="box">
       	<th:block th:each="diet : ${diet}">
         <p><input type="text" name="food" id="text" th:value="${diet.food}" required> <input type="text" name="kcal" id="num" pattern="^[0-9]*" th:value="${diet.kcal}" required> kcal 
-        <input type='image' src='/img/minus.png' class='minus_btn' onclick='remove(this)'></p>
+        <input type='button' class='minus_btn' onclick='remove(this)'></p>
         </th:block>
         <input type="hidden" name="date" th:value="${date}">
         <input type="hidden" name="time" th:value="${time}">
@@ -40,7 +40,7 @@
 	const add_textbox = () => {
 		  const box = document.getElementById("box");
 		  const newP = document.createElement('p');
-		  newP.innerHTML = "<input type='text' name=food id='text' required> <input type='text' name=kcal id='num' pattern='^[0-9]*' required> kcal <input type='image' src='/img/minus.png' class='minus_btn' onclick='remove(this)'>";
+		  newP.innerHTML = "<input type='text' name=food id='text' required> <input type='text' name=kcal id='num' pattern='^[0-9]*' required> kcal <input type='button' class='minus_btn' onclick='remove(this)'>";
 		  box.appendChild(newP);
 		}
 		        
