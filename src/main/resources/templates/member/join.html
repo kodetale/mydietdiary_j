@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="//code.jquery.com/jquery.min.js"></script>
+<title>My Diet Diary</title>
+</head>
+
+<body>
+<div id="index_wrap" class="wrap">
+  <div class="form_wrap">
+    <img src="/img/logo.png" width="260px" height="160px">
+    <form action="/member/join" role="form" method="post" name="joinform" id="join_form" class="form" th:object="${memberDto}" onsubmit="return sendit()">
+    	<label for="id" class="join_label">아이디</label>
+      	<div>
+        	<input type="text" th:field="*{memberId}" th:classappend="${#fields.hasErrors('memberId')} == true ? 'fieldError'">
+      	</div>
+      	<div id="errorMsg_id" class="errorMsg">영문과 숫자만 사용할 수 있습니다.</div>
+      	<div id="errorMsg_id2" class="errorMsg">4자 이상 12자 이하로 입력해주세요.</div>
+      	<label for="password" class="join_label">비밀번호</label>
+      	<div>
+        	<input type="password" name="password" id="password" th:field="*{password}" th:classappend="${#fields.hasErrors('memberId')} == true ? 'fieldError'">
+      	</div>
+      	<div id="errorMsg_pw" class="errorMsg">8자 이상 16자 이하로 입력해주세요.</div>
+      	<label for="password_ch" class="join_label">비밀번호 확인</label>
+      	<div>
+        	<input type="password" name="password_ch" id="password_ch">
+      	</div>
+      	<label for="name" class="join_label">이름</label>
+      	<div>
+        	<input type="text" name="name" id="name" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} == true ? 'fieldError'">
+      	</div>
+      	<div id="errorMsg_name" class="errorMsg">8자 이하로 입력해주세요.</div>
+      	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      	<input type="submit" value="회원가입" class="form_btn">
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+	
+	if([[${errorMessage}]] != null){
+		alert([[${errorMessage}]]);
+	}
+		
+ 	const sendit = () => {
+ 		const password = document.joinform.password;
+ 		const password_ch = document.joinform.password_ch;
+ 		
+ 		if(password.value != password_ch.value) {
+ 			alert("비밀번호가 다릅니다. 다시 입력해주세요.")
+ 			return false;
+ 		}
+ 			
+ 		return true; 
+ 
+ 	}
+ 		
+  	if([[${msg}]] != null) {
+		const message = [[${msg}]];
+		const url = [[${url}]];
+		alert(message);
+		document.location.href = url;
+ 	}
+  		
+  	$("#memberId").on("propertychange change paste input", function() {
+  		const expIDText = /[a-zA-z0-9]+$/;
+  		  	
+  		if($("#memberId").val().length === 0) {
+			$("#errorMsg_id").css('display', 'none');
+			$("#errorMsg_id2").css('display', 'none');
+		}
+  		else if(!expIDText.test($("#memberId").val())) {
+  			$("#errorMsg_id").css('display', 'block');
+  		}
+  		else if($("#memberId").val().length < 4 || $("#memberId").val().length > 12) {
+			$("#errorMsg_id2").css('display', 'block');
+		}
+  		else {
+  			$("#errorMsg_id").css('display', 'none');
+  			$("#errorMsg_id2").css('display', 'none');
+  		}
+  			
+  	});
+  		
+  	$("#password").on("propertychange change paste input", function() {
+  		  	
+  		if($("#password").val().length === 0) {
+			$("#errorMsg_pw").css('display', 'none');
+		}
+  		else if($("#password").val().length < 8 || $("#password").val().length > 16) {
+  			$("#errorMsg_pw").css('display', 'block');
+  		}
+  		else {
+  			$("#errorMsg_pw").css('display', 'none');	
+  		}
+  		  	
+  		});
+  		
+  	$("#name").on("propertychange change paste input", function() {
+  		const expIDText = /[a-zA-z0-9]+$/;
+  		  	
+  		if($("#name").val().length === 0) {
+			$("#errorMsg_name").css('display', 'none');
+		}
+  		else if($("#name").val().length > 8) {
+  			$("#errorMsg_name").css('display', 'block');
+  		}
+  		else {
+  			$("#errorMsg_name").css('display', 'none');	
+  		}
+  			
+  	});
+  		
+</script>
+
+</body>
+
+</html>

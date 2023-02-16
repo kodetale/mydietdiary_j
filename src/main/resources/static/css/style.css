@@ -1,0 +1,574 @@
+@font-face {
+  font-family: 'Bareun_hipi';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_01@1.0/Bareun_hipi.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-image: url(../img/background.jpg);
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: 'Bareun_hipi';
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+/*전체 적용*/
+.wrap * {
+  font-family: 'Bareun_hipi';
+  font-size: 18px;
+}
+
+.wrap {
+  width: 700px;
+  height: 600px;
+  margin: 20px auto 10px auto;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.wrap::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.wrap input[type=text], .wrap input[type=password] {
+  border: 1px solid #d9d9d9;
+  width: 260px;
+  height: 50px;
+  padding-left: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+/*top.php*/
+.top {
+  margin-top: 30px;
+  margin-bottom: 80px;
+  font-weight: bold;
+}
+
+.logout{
+  margin-right: 20px;
+  float : right;
+}
+
+.logout > span {
+  cursor: pointer;
+}
+
+/*index.php*/
+#index_wrap {
+  height: 700px;
+  align-items: center;
+  text-align: center;
+}
+
+#index_wrap input[type=text], #index_wrap input[type=password] {
+  margin-bottom: 10px;
+}
+
+.index {
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 25px;
+}
+
+.form_btn {
+  width: 80px;
+  height: 40px;
+  border: 0;
+  border-radius: 5px;
+  box-sizing: content-box;
+  background: #e0e2f7;
+  box-shadow: 2px 2px #b6bcf7;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/*join.php*/
+/* #index_wrap #member_form input#id {
+  width: 190px;
+}
+
+#index_wrap #member_form input#checkIdBtn {
+  position: relative;
+  width: 55px;
+  height: 45px;
+  margin-left: 3px;
+  padding-left: 5px;
+  border: 0;
+  border-radius: 5px;
+  box-sizing: content-box;
+  background: #fccbde;
+  box-shadow: 1px 1px #ff85c1;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#index_wrap #member_form #result {
+  display: none;
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: bold;
+} */
+
+.join_btn {
+  margin-top: 10px; 
+  margin-left: 210px;
+  font-weight: bold;
+}
+
+.wrap .form_wrap .join_label {
+  margin-left: 4px;
+  margin-bottom: 7px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.wrap .form_wrap p {
+  margin-top: 4px;
+  margin-bottom: 3px;
+  font-size: 20px;
+}
+
+.loginError {
+  margin-top: 14px;
+  font-size: 18px;
+  color: #FF5576;
+  font-weight: bold;
+}
+
+.fieldError {
+  outline: 1px solid #ff5289;
+}
+
+.errorMsg {
+  display: none;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #FF5576;
+}
+
+.delete {
+  margin-top: 25px;
+  text-align: right;
+  cursor: pointer;
+}
+
+/*diary 전체 적용*/
+#diary_wrap {
+  background-color: rgb(255, 255, 255);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  position: relative;
+}
+
+.bar {
+  width: 700px;
+  height: 50px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 15px 0px 10px 0px;
+  text-align: center;
+  position: fixed;
+  z-index: 2;
+  font-weight: bold;
+  background-color: #e0e2f7;
+}
+
+.hideMenuBody {
+  position: absolute;
+  top: 70px;
+  width: 220px;
+  height: 523px;
+  background-color: #ffffff;
+  margin-top: 5px;
+  border: 1px solid black;
+  opacity: 0;
+  transition: all 300ms;
+  pointer-events : none;
+}
+
+.hideMenuBody > div {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  width: 220px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1px;
+}  
+
+.hideMenuBody .menu:hover {
+  background-color: #eef5ff;
+}
+
+.menu_btn {
+  border: none;
+  background: none;
+  left: 20px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.menu_img {
+  width: 42px;
+  height: 42px;
+}
+
+.title {
+  font-size: 30px;
+  text-align: left;
+  position: absolute;
+  left: 80px;
+}
+
+#datepicker {
+  text-align: center;
+  font-size: 25px;
+  width: 115px;
+  height: 35px;
+  border: none;
+  padding-left: 0px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #e0e2f7;
+}
+
+.new {
+  position: absolute;
+  background-image: url(../img/new.png);
+  background-size: 43px;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  width: 43px;
+  height: 43px;
+  top: 13px;
+  left: 395px;
+  cursor: pointer;
+}
+
+.diary {
+  display: flex;
+  justify-content: center;
+  padding-top: 90px;
+}
+
+.diary_btn {
+  margin-top: 8px;
+  width: 35px;
+  height: 35px;
+}
+
+.block {
+  width: 400px;
+  padding: 10px 0 10px 0;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.guide {
+  font-weight: bold;
+  margin-top: 180px;
+}
+
+/*diet.php*/
+#diet_block {
+  background-color: #fccbde;
+  box-shadow: 3px 3px #ff85c1;
+}
+
+.total {
+  margin-top: 15px;
+}
+
+/*exercise.php*/
+#exercise_block {
+  background-color:  #cbdbfc;
+  box-shadow: 3px 3px #99bcf2;
+}
+
+/*new, edit*/
+
+.back_img {
+  width: 42px;
+  height: 42px;
+}
+
+.date {
+  margin-top: 3px;
+  font-size: 25px;
+}
+
+.plus_btn {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 20px;
+  left: 405px;
+}
+
+.edit_plus_btn {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 20px;
+  left: 432px;
+}
+
+.time {
+  margin-right: 290px;
+}
+
+.time input[type="text"] {
+  width: 60px;
+  margin-bottom: 10px;
+}
+
+#box > p {
+  position: relative;
+  z-index: 1;
+}
+
+.minus_btn {
+  top: 14px;
+  left: 390px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+}
+
+.e_minus_btn {
+  top: 14px;
+  left: 415px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+}
+
+.form {
+  text-align: center;
+  font-weight: bold;
+}
+
+#text {
+  width: 250px;
+  margin-bottom: 10px;
+}
+
+#num {
+  width: 100px;
+}
+
+select::-ms-expand {
+  display: none;
+}
+.select {
+  background-color: white;
+  width: 45px;
+  height: 48px;
+  border: 1px solid #d9d9d9;
+  font-size: 18px;
+  border-radius: 4px;
+}
+
+/*weight.php*/
+#weight {
+  width: 50px;
+}
+
+.w_new {
+  width: 43px;
+  height: 43px;
+  top: 90px;
+  left: 385px;
+  position: absolute;
+}
+
+#search {
+  margin-top: 10px;
+}
+
+#year {
+  width: 65px;
+  margin-right: 10px;
+}
+
+#month {
+  width: 55px;
+}
+
+#search_btn {
+  width: 45px;
+}
+
+.w_del {
+  cursor: pointer;
+}
+
+#w_guide {
+  margin-left: 10px;
+  margin-top: 120px;
+}
+
+.w_table {
+  margin-top: 15px;
+  width: 180px;
+  box-shadow: 3px 3px #bf9ef2;
+  font-weight: bold;
+  text-align: center;
+}
+
+.w_table td, .w_table tr {
+  border-bottom: 1px solid #bf9ef2;
+  height: 36px;
+}
+
+@media (max-width: 767px) {
+
+  .wrap {
+    width: 360px;
+    height: 650px;
+  }
+  
+  .bar {
+    width: 360px;
+  }
+
+  #diet_block {
+    width: 300px;
+  }
+
+  #exercise_block {
+    width: 300px;
+  }
+
+  .menu_btn {
+    top: 17px;
+    left: 10px;
+  }
+
+  .menu_img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .back_img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .title {
+    top: 20px;
+    left: 50px;
+    font-size: 20px;
+  }
+
+  #datepicker {
+    width: 85px;
+    font-size: 20px;
+  }
+
+  .new {
+    background-size: 35px;
+    top: 16px;
+    left: 215px;
+  }
+
+  .date {
+    margin-top: 5px;
+    font-size: 20px;
+  }
+
+  .plus_btn {
+    width: 27px;
+    height: 27px;
+    top: 20px;
+    left: 225px;
+  }
+
+  .w_new {
+    width: 43px;
+    height: 43px;
+    top: 90px;
+    left: 215px;
+  }
+  
+  .hideMenuBody {
+    height: 573px;
+  }
+
+  #text {
+    width: 160px;
+  }
+
+  #num {
+    width: 60px;
+  }
+
+  .time {
+    margin-right: 155px;
+  }
+
+  #e_time {
+    margin-right: 175px;
+  }
+
+  .minus_btn {
+    top: 16px;
+    left: 274px;
+    width: 23px;
+    height: 23px;
+  }
+
+  .e_minus_btn {
+    top: 16px;
+    left: 282px;
+    width: 23px;
+    height: 23px;
+  }
+
+  .edit_plus_btn {
+    width: 27px;
+    height: 27px;
+    top: 20px;
+    left: 246px;
+  }
+
+}

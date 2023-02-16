@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+
+<head>
+  	<script src="//code.jquery.com/jquery.min.js"></script>
+  	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<title>My Diet Diary</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+<div id="diary_wrap" class="wrap">
+  <div id="weight_bar" class="bar">
+    <button class="menu_btn" id="menu_btn" onclick="showLeftMenu(); return false;">
+      <img src="/img/menu.png" class="menu_img">
+    </button>
+    <span class="title">몸무게 기록</span>
+	<div th:replace="fragments/fragments::menuFragment"></div>   
+  	<div class="date">[[${today}]]</div>
+  </div>
+  <div class="diary">
+    <div>
+    <form action="/weight" method="POST" class="form">
+        <input type="hidden" name="date" th:value="${today}">
+        <input type="text" id="weight" name="weight" pattern="^[0-9]*"> kg
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> 
+        <input type="image" class="w_new" src="/img/new.png"/>
+    </form>
+    
+    <form action="/weight" method="GET" id="search">
+    	<select id="year" name="year" class="select">
+			<th:block th:each="num : ${#numbers.sequence(today_y,today_y-5)}">
+				<option th:value="${num}" th:text="${num} + '년'" th:selected="${num} == ${year}"></option>
+        	</th:block>
+        </select>
+        <select id="month" name="month" class="select">
+			<th:block th:each="num : ${#numbers.sequence(1,12)}">
+				<option th:value="${#numbers.formatInteger(num,2)}" th:text="${num} + '월'" th:selected="${num} == ${month}"></option>
+        	</th:block>
+        </select>
+    	<input type="submit" value="검색" class="form_btn" id="search_btn">
+    </form>
+	
+	<th:block th:if="${weight.size != 0}">
+		<table class="w_table" bgcolor="#d6cbfc">
+			<th:block th:each="weight : ${weight}">    
+		 		<tr>
+          			<td>[[${weight.date}]]</td>
+          			<td>[[${weight.weight}]]kg</td>
+          			<td><div class="w_del" th:id="${weight.id}" onClick="delWeight(this.id)">삭제</div></td>
+        </tr>	
+			</th:block>
+		</table>
+	</th:block>
+	<div th:unless="${weight.size != 0}" class="guide" id="w_guide">저장된 몸무게가 없습니다😂</div>
+	
+    </div>
+  </div>
+</div>
+</div>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	
+	function showLeftMenu(){
+		var leftMenuObj = document.getElementById('hideMenuBodyId');
+	  leftMenuObj.style['opacity'] = "100%";
+	  leftMenuObj.style['pointer-events'] = "auto";
+	}
+
+	function closeLeftMenu() {
+		var leftMenuObj = document.getElementById('hideMenuBodyId');
+	  leftMenuObj.removeAttribute("style");
+	}
+	
+   	function delWeight(id) {
+   	    var token = $("meta[name='_csrf']").attr("content");
+   	    var header = $("meta[name='_csrf_header']").attr("content");
+
+   	    	$.ajax({
+   	    	　　type:'post', 
+   	    	  	contentType:'application/json', 
+   	    	  	data: {
+   	    			id : id,
+   	    			year: [[${year}]],
+   	    			month: [[${month}]]
+   	    		}, 
+   	    		url: '/weight/delete', 
+   	    		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+   	    		beforeSend : function(xhr){
+   	                xhr.setRequestHeader(header, token);
+   	            }, success: function() {
+   	            	location.reload();
+   	            }
+   	    	});
+	}
+	
+    </script>
+</th:block>
+</body>
+
+</html>

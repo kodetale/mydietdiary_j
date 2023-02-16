@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+
+<head>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="/css/datepicker.css">
+  	<script src="//code.jquery.com/jquery.min.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<title>My Diet Diary</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+<div id="diary_wrap" class="wrap">
+  <div id="exercise_bar" class="bar">
+    <button class="menu_btn" id="menu_btn" onclick="showLeftMenu(); return false;">
+      <img src="/img/menu.png" class="menu_img">
+    </button>
+    <span class="title">운동 일기</span>
+	<div th:replace="fragments/fragments::menuFragment"></div>   
+    <form action="../exercise/diary" id="exercise_form" method="GET">
+      <input type="text" id="datepicker" name="date" th:value="${date}">
+      <input type="submit" class="new" value="" onclick="javascript: form.action='/exercise/new';" />
+    </form>
+  </div>
+  <div class="diary">
+    <div>
+    <th:block th:if="${exer.size != 0}">
+    	<th:block th:each="time : ${time}">
+     		<div id="exercise_block" class="block">   
+			<th:block th:text="${#strings.substring(time, 0, 5)}" />
+		 	<form action=/exercise/edit method="GET">
+        		<input type="hidden" name="date" th:value="${date}">
+        		<input type="hidden" name="time" th:value="${time}">
+        		<input type="image" class="diary_btn" src="/img/edit.png" onClick="this.disabled=true; this.form.submit()">
+      			<img class="diary_btn" th:id="${time}" src="/img/cancel.png" onClick="delExer(this.id)" style="cursor: pointer;">
+      		</form>
+		 		<th:block th:each="exer : ${exer}">    
+		 			<div th:if="${time == exer.time}">
+		 				[[${exer.exercise}]] [[${exer.num}]][[${exer.unit}]]
+		 			</div>
+				
+				</th:block>
+    		</div>
+    		
+    	</th:block>
+    </th:block>
+    
+    <div th:unless="${exer.size != 0}" class="guide">저장된 일기가 없습니다😂</div>
+    </div>
+  </div>
+</div>
+</div>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	$(function () {
+		  $("#datepicker").datepicker({
+		    dateFormat:"yy-mm-dd",
+		    dayNamesMin:["일","월","화","수","목","금","토"],
+		    monthNames:["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+		    maxDate: "+0D",
+		    showMonthAfterYear: true,
+		    yearSuffix: '년',
+		    showButtonPanel: true,
+		    nextText: "다음달",
+		    prevText: "이전달",
+		    currentText: "오늘",
+		    closeText: "닫기",
+
+		    onSelect:function(d){
+		      document.getElementById('exercise_form').submit();
+		    }
+		  });
+		});	
+	
+	function showLeftMenu(){
+		var leftMenuObj = document.getElementById('hideMenuBodyId');
+	  leftMenuObj.style['opacity'] = "100%";
+	  leftMenuObj.style['pointer-events'] = "auto";
+	}
+
+	function closeLeftMenu() {
+		var leftMenuObj = document.getElementById('hideMenuBodyId');
+	  leftMenuObj.removeAttribute("style");
+	}
+	
+   	function delExer(time) {
+   	    var token = $("meta[name='_csrf']").attr("content");
+   	    var header = $("meta[name='_csrf_header']").attr("content");
+
+   	    	$.ajax({
+   	    	　　type:'post', 
+   	    	  	contentType:'application/json', 
+   	    	  	data: {
+   	    			date : [[${date}]],
+   	    			time : time
+   	    		}, 
+   	    		url: '/exercise/diary', 
+   	    		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+   	    		beforeSend : function(xhr){
+   	                xhr.setRequestHeader(header, token);
+   	            }, success: function() {
+   	            	location.reload();
+   	            }
+   	    	});
+	}
+	
+    </script>
+</th:block>
+</body>
+
+</html>

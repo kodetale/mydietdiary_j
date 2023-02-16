@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+
+<head>
+  	<script src="//code.jquery.com/jquery.min.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<title>My Diet Diary</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+<div id="diary_wrap" class="wrap">
+  <div id="diet_bar" class="bar">
+    <button class="menu_btn" id="menu_btn" th:onclick="|location.href='@{/diet/diary(date=${date})}'|">
+      <img src="/img/back.png" class="back_img">
+    </button>
+    <div class="date">[[${date}]] <th:block th:text="${#strings.substring(time, 0, 5)}" /></div> <input type="image" class="edit_plus_btn" src="/img/plus.png" onclick="add_textbox()">
+  </div>
+  <div class="diary">
+    <form action="/diet/edit" method="POST" id="new_form" class="form">
+      <div id="box">
+      	<th:block th:each="diet : ${diet}">
+        <p><input type="text" name="food" id="text" th:value="${diet.food}" required> <input type="text" name="kcal" id="num" pattern="^[0-9]*" th:value="${diet.kcal}" required> kcal 
+        <input type='image' src='/img/minus.png' class='minus_btn' onclick='remove(this)'></p>
+        </th:block>
+        <input type="hidden" name="date" th:value="${date}">
+        <input type="hidden" name="time" th:value="${time}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      </div>
+      	<input type="submit" value="수정" class="form_btn">
+      	<button type="button" class="form_btn" onclick="history.back()">취소</button>
+    </form>
+  </div>
+</div>
+</div>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	const add_textbox = () => {
+		  const box = document.getElementById("box");
+		  const newP = document.createElement('p');
+		  newP.innerHTML = "<input type='text' name=food id='text' required> <input type='text' name=kcal id='num' pattern='^[0-9]*' required> kcal <input type='image' src='/img/minus.png' class='minus_btn' onclick='remove(this)'>";
+		  box.appendChild(newP);
+		}
+		        
+		const remove = (obj) => {
+		  document.getElementById('box').removeChild(obj.parentNode);
+		}
+	
+    </script>
+</th:block>
+</body>
+
+</html>

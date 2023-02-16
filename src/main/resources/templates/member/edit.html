@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/style.css">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+	<script src="//code.jquery.com/jquery.min.js"></script>
+<title>My Diet Diary</title>
+</head>
+
+<body>
+<div id="index_wrap" class="wrap">
+  <div class="form_wrap">
+    <img src="/img/logo.png" width="260px" height="160px">
+    <form name="joinform" id="join_form" class="form">
+		<input type="hidden" th:value=${member.id} id="id">
+      	<label for="id" class="join_label">아이디</label>
+      	<div>
+        	<input type="text" th:value=${member.memberId} id="memberId" readonly>
+      	</div>
+      	<label for="password" class="join_label">비밀번호</label>
+      	<div>
+        	<input type="password" name="password" id="password">
+      	</div>
+      	<div id="errorMsg_pw" class="errorMsg">8자 이상 16자 이하로 입력해주세요.</div>
+      	<label for="password_ch" class="join_label">비밀번호 확인</label>
+      	<div>
+        	<input type="password" name="password_ch" id="password_ch">
+      	</div>
+      	<label for="name" class="join_label">이름</label>
+      	<div>
+        	<input type="text" name="name" th:value="${member.name}" id="name">
+      	</div>
+      	<div id="errorMsg_name" class="errorMsg">8자 이하로 입력해주세요.</div>
+      	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      	<input type="button" id="edit_btn" class="form_btn" value="수정">
+      	<button type="button" class="form_btn" onclick="history.back()">취소</button>
+    	<div class="delete"><div id="del_btn">회원탈퇴</div></div>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  		
+  	$("#password").on("propertychange change paste input", function() {
+  		  	
+  		if($("#password").val().length === 0) {
+			$("#errorMsg_pw").css('display', 'none');
+		}
+  		else if($("#password").val().length < 8 || $("#password").val().length > 16) {
+  			$("#errorMsg_pw").css('display', 'block');
+  		}
+  		else {
+  			$("#errorMsg_pw").css('display', 'none');	
+  		}
+  		  	
+  		});
+  		
+  	$("#name").on("propertychange change paste input", function() {
+  		const expIDText = /[a-zA-z0-9]+$/;
+  		  	
+  		if($("#name").val().length === 0) {
+			$("#errorMsg_name").css('display', 'none');
+		}
+  		else if($("#name").val().length > 8) {
+  			$("#errorMsg_name").css('display', 'block');
+  		}
+  		else {
+  			$("#errorMsg_name").css('display', 'none');	
+  		}
+  			
+  	});
+  	
+	let index = {
+			init: function() {
+				$("#edit_btn").on("click", () => {
+				 	if(!$("#password").val().length == 0 && ($("#password").val().length < 8 || $("#password").val().length > 16)) {
+				 		document.getElementById('password').classList.add('fieldError');
+		 				return false;
+					} else if(password.value != password_ch.value) {
+						alert("비밀번호가 다릅니다. 다시 입력해주세요.")
+		 				return false;
+					} else if($("#name").val().length > 8) {
+						document.getElementById('name').classList.add('fieldError');
+						return false;
+					} else if(!($("#name").val())) {
+						document.getElementById('name').classList.add('fieldError');
+						return false;
+					} else {
+						this.edit();
+		 		    }  
+				})
+				
+				$("#del_btn").on("click", () => {
+					if(!confirm("정말 탈퇴하시겠습니까?")) {
+						return false;
+					} else {
+						this.del();
+					}
+				})
+			},
+			
+			edit: function() {
+				
+				let data = {
+						id: $("#id").val(),
+						memberId: $("#memberId").val(),
+						password: $("#password").val(),
+						name: $("#name").val()
+						
+				};
+				
+	    		var token = $("meta[name='_csrf']").attr("content");
+	        	var header = $("meta[name='_csrf_header']").attr("content");
+				
+				$.ajax({
+					
+					type: "POST",
+					url: "/member/edit",
+					data: data,
+					contentType: "application/json",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+					beforeSend : function(xhr){
+		            	xhr.setRequestHeader(header, token);
+		        	},
+		        	
+				}).done(function(res) {
+						alert("정보수정이 완료되었습니다.");
+						history.go(-1);
+				}).fail(function(error) {
+					alert(JSON.stringify(error));
+				})
+			},
+			
+			del: function() {
+				let data = {
+						id: $("#id").val(),
+						memberId: $("#memberId").val()
+				};
+				
+	    		var token = $("meta[name='_csrf']").attr("content");
+	        	var header = $("meta[name='_csrf_header']").attr("content");
+				
+				$.ajax({
+					
+					type: "POST",
+					url: "/member/del",
+					data: data,
+					contentType: "application/json",
+					contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+					beforeSend : function(xhr){
+		            	xhr.setRequestHeader(header, token);
+		        	},
+		        	
+				}).done(function(res) {
+					alert("회원탈퇴가 완료되었습니다.");
+					location.href="/";
+				}).fail(function(error) {
+					alert(JSON.stringify(error));
+				})
+			} 
+			
+	}
+	
+	index.init();  
+  		
+</script>
+
+</body>
+
+</html>

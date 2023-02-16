@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	  
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/style.css">
+	<title>My Diet Diary</title>
+</head>
+
+<body>
+<div id="index_wrap" class="wrap">
+  <div class="index">
+    <img class="logo" src="/img/logo.png" width="350px" height="215px">
+      <th:block sec:authorize="isAnonymous()">
+      <form action="/" method="post" id="login_form" class="form">
+        <div><input type="text" name="memberId" id="memberId" placeholder="아이디"></div>
+        <div><input type="password" name="password" id="password" placeholder="비밀번호"></div>
+        <div><input type="submit" value="로그인" class="form_btn"></div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      </form>
+    <p th:if="${loginErrorMsg}" class="loginError" th:text="${loginErrorMsg}"></p>
+    <div class="join_btn"><a href="/member/join">회원가입</a></div>
+    </th:block>
+    
+    <th:block sec:authorize="hasRole('ROLE_USER')" >
+    <form action="/diet/diary" method="GET" id="login_form" class="form">
+        <div><input type="hidden" name="date" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></div>
+        <div><input type="submit" value="ENTER" class="form_btn"></div>
+      </form>
+    <div class="join_btn"><a href="/member/logout">로그아웃</a></div>
+    </th:block>
+  </div>
+</div>
+
+</body>
+</html>
